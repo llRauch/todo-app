@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать Задачу</title>
+    <!-- Можно подключить тот же CSS, что и в tasks.html -->
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .edit-form { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; background-color: #f9f9f9; max-width: 500px;}
+        .edit-form label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .edit-form input[type="text"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; }
+        .edit-form button { padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;}
+        .edit-form button:hover { background-color: #218838; }
+        .edit-form a { text-decoration: none; color: #007bff; }
+    </style>
+</head>
+<body>
+
+<h1>Редактировать Задачу</h1>
+
+<div class="edit-form">
+    <!-- Форма будет отправлять POST-запрос на /update/{id} -->
+    <!-- th:object связывает форму с объектом "task", переданным из контроллера -->
+    <form th:action="@{/update/{id}(id=${task.id})}" th:object="${task}" method="post">
+        <div>
+            <label for="description">Описание:</label>
+            <!-- th:field="*{description}" связывает input с полем description объекта task -->
+            <!-- Thymeleaf автоматически установит value из task.getDescription() -->
+            <input type="text" id="description" th:field="*{description}" required size="50"/>
+            <!-- Если бы были ошибки валидации, их можно было бы показать здесь -->
+            <!-- <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span> -->
+        </div>
+
+        <!-- Скрытое поле для completed, чтобы оно не сбросилось на false -->
+        <!-- Либо, как мы сделаем в контроллере, мы просто обновим только описание -->
+        <!-- <input type="hidden" th:field="*{completed}" /> -->
+        <!-- createdAt обновлять не нужно -->
+
+        <div>
+            <button type="submit">Сохранить изменения</button>
+            <a th:href="@{/}">Отмена</a> <!-- Ссылка для возврата на главную без сохранения -->
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
