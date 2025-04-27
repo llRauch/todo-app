@@ -3,6 +3,7 @@ package com.petproject.todo_app.controller;
 import com.petproject.todo_app.model.Task;
 import com.petproject.todo_app.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller; // Используем @Controller, а не @RestController
 import org.springframework.ui.Model; // Для передачи данных в шаблон
 import org.springframework.web.bind.annotation.GetMapping;
@@ -127,7 +128,7 @@ public class TaskWebController {
     }
 
     // Метод для обработки удаления задачи
-    // Используем PostMapping для безопасности
+    // используем PostMapping для безопасности
     @PostMapping("/delete/{id}")
     public String deleteTask(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         boolean deleted = taskService.deleteTask(id);
