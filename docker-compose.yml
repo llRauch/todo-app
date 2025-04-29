@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todo-app-spring
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/todo_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    # Сети, к которым подключается сервис (по умолчанию создается сеть с именем проекта)
+    # networks:
+    #  - todo-network # Можно явно задать имя сети
+
+  db:
+    image: postgres:16-alpine
+    container_name: todo-app-postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: todo_db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d todo_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    # Проброс портов (необязательно для работы приложения, но полезно для подключения к БД с хоста)
+    # <порт_на_хосте>:<порт_в_контейнере_postgres>
+    # ports:
+    #   - "5433:5432" # Пример: делаем БД доступной на порту 5433 нашей машины
+    # networks:
+    #  - todo-network
+
+volumes:
+  postgres-data:
+    driver: local
+
+# Определяем сети (необязательно, если устраивает сеть по умолчанию)
+# networks:
+#  todo-network:
+#    driver: bridge
