@@ -15,9 +15,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # Сети, к которым подключается сервис (по умолчанию создается сеть с именем проекта)
-    # networks:
-    #  - todo-network # Можно явно задать имя сети
 
   db:
     image: postgres:16-alpine
