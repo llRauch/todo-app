@@ -32,18 +32,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    # Проброс портов (необязательно для работы приложения, но полезно для подключения к БД с хоста)
-    # <порт_на_хосте>:<порт_в_контейнере_postgres>
-    # ports:
-    #   - "5433:5432" # Пример: делаем БД доступной на порту 5433 нашей машины
-    # networks:
-    #  - todo-network
 
 volumes:
   postgres-data:
     driver: local
-
-# Определяем сети (необязательно, если устраивает сеть по умолчанию)
-# networks:
-#  todo-network:
-#    driver: bridge
