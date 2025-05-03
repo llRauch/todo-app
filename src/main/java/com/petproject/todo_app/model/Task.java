@@ -23,24 +23,17 @@ public class Task {
     private String description;
 
     @Column(nullable = false)
-    private Boolean completed = false; // Статус задачи (по умолчанию - не выполнена)
+    private Boolean completed = false;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    // Метод для установки даты создания перед сохранением
-    // @PrePersist аннотация JPA гарантирует, что метод onCreate будет вызван
-    // автоматически перед тем, как новая сущность Task
-    // будет впервые сохранена в базу данных
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
 
-    // Конструктор для удобного создания новой задачи только с описанием
     public Task(String description) {
         this.description = description;
-        // completed и createdAt будут установлены по умолчанию или через @PrePersist
     }
-
 }
